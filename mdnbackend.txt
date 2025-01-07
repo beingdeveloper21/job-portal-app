@@ -1,0 +1,65 @@
+Create server folder under  and server.js file in it.
+Doing npm init -y creates package.json and define the type as module.
+Install other dependencies 
+express - helps to crete server
+bcrypt - encrypting of user's password
+jsonwebtoken-authentication  for recruiter
+mongoose-helps to connect with mongo db database
+svix - clerk authentication
+nodemon- helps in starting the server
+cors-helps to manage multiple origin
+multer-helps to manage form data
+dotenv-manages environment variable
+cloudinary-stores company's logo and user's resume in cloud platform 
+Create a express server initialize middleware routes and port.
+
+models->store mongoose model and manage database task
+routes->diiderent routes for diffrerent purpose
+controllers->multiple files to manage multiple logic
+middleware->manage middlewares
+utils->common logic for controller functions
+config->confiuration file for mongodb.
+
+
+Sentry is an application monitoring platform that finds,fix error and optimize our application,
+Create an account on sentry sign in using google and create express app.
+Follow step by procedure to configure sentry in our project
+configure sdk
+in instrument.js
+do the following listed changes
+ config->instrument.js
+import * as Sentry from "@sentry/node"
+import { nodeProfilingIntegration } from "@sentry/profiling-node";
+becuase of modular structure
+import this instrument.js in server.js
+
+To monitor  mongodb database using sentry add integration  Sentry.mongooseIntegration() in instrument.js 
+To initialize sentry in server.js fist add
+import * as Sentry from "@sentry/node";
+Sentry.setupExpressErrorHandler(app); in server.js
+We require imported express before calling sentry 
+tracesSampleRate: 1.0, comment this
+
+This configures our sentry.
+app.get("/debug-sentry", function mainHandler(req, res) {
+  throw new Error("My first Sentry error!");
+});
+Helps to verify the configuration throws error in Sentry platform first call the API on postman.
+This helps to monitor all the errors in our single application.
+
+We need to manage clerk web hooks using controller function.
+In the User.js under Models folder
+By using schema we create user models.
+Create user schema with properties id,name,email,resume,image and create a model named User based on this Schema
+then export it. 
+
+In controllers folder create webhooks.js.
+On deploying our project we get clerk webhook secret and then we can use it in our project for now we create it as an environment variable.
+We get SVIX id,SVIX time stamp and SVIX signature from our req headers of  webhook call.
+
+Data contains the payload data for the user 
+but there are differnet types (event) handled by switch case cases.
+ADD logic to create,update and delete user.
+Controller function-> Create a Route->Upload on Github->Get backend link->Webhook Secret Key from Clerk dashboard.
+Server.js 
+Create a route for webhook

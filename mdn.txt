@@ -1,0 +1,216 @@
+Clerk-User Authentication and User Management Platform that intrgrates user authentication in our mern project.
+Visit to clerk website and sign up using Google and create an application - named(Job Portal)
+and then do the listed changes mentioned in the website.
+Install the dependencies required for clerk authentication.
+Paste the clerk publishable key in the .env file under Client folder.
+Import clerk publishable key in main.jsx from '@clerk/clerk-react'
+Then wrp the components in CLerkProvider tag and add the properties publishabekey(pass PUBLISHABLE_KEY to it) and afterSignOutUrl='/' so when user is logged out we get redirected to home page.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+JobLocations.map((location, index) => (...)):
+
+The map function is used to iterate over the JobLocations array.
+React requires a key attribute for each child in a list to uniquely identify elements. This helps React efficiently update the DOM when the list changes (additions, deletions, or reordering).
+Purpose of index in this Context:
+Since JobLocations is an array, the index represents the position of each item within the array. It serves as a simple and straightforward way to assign a unique identifier to each <li>.
+Renders the current location (from the JobLocations array) as text next to the checkbox.
+
+
+We create a JobCard Component, in this component we first destructure the Job data.
+In assets.js JobsData is an array of object where each object represents single job data.
+TO mount the HTML tag in Job description we use dangerouslySetInnerHTML.
+In JobListing.jsx we dynamically render a list of JobCard components, with each card representing an individual job from the jobsData array.
+We render our JobData using JobCard component.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+We are trying to make our website responsive so at 412*915 Dimension:Pixel 7 zoom-75percent we opened our webpage and we hide the user name for this size.
+Now we create a button using a state variable on clicking the button the boolean value of the state variable toggles.
+If it is true: then CLOSE is displayed and false then FILTERS is displayed.
+Then with the help of this state variable we also provide dynamic class that if it is true search by categories and search by location section will be displayed and false then hidden.
+
+
+Now we want to create pagination 
+So in JobListing component we create state variables currentPage and the default value is set to 1
+If the length of jobs>0 we return div we will create left arrow icon using anchor tag.
+Pagination Calculation:
+
+Math.ceil(jobs.length / 6) calculates the number of pages needed by dividing the total jobs by 6 and rounding up.
+Array.from({ length: Math.ceil(jobs.length / 6) }) creates an array with as many items as there are pages.
+Rendering Buttons:
+
+map((_, index) => ...) iterates over the array and generates a button for each page.
+Button Attributes:
+
+Each button has an onClick handler that calls setCurrentPage(index + 1) to set the current page.
+The className applies conditional styling:
+If currentPage === index + 1, the button gets a blue background and text.
+Otherwise, it gets gray text.
+Anchor Tag:
+
+The <a href="#job-list"> ensures the page scrolls to the job list when a pagination button is clicked.
+
+
+
+1. jobs.slice((currentPage - 1) * 6, currentPage * 6)
+This part of the code is responsible for selecting a specific subset of jobs to display based on the current page.
+
+jobs.slice(startIndex, endIndex):
+slice() is an array method that returns a shallow copy of a portion of an array. It takes two arguments:
+startIndex: The index from which to start slicing (inclusive).
+endIndex: The index at which to end slicing (exclusive).
+It extracts the elements starting from startIndex and up to, but not including, endIndex.
+How the indices are calculated:
+(currentPage - 1) * 6:
+
+This is the start index for slicing.
+For page 1, (currentPage - 1) * 6 = 0, so the slice starts at index 0.
+For page 2, (currentPage - 1) * 6 = 6, so the slice starts at index 6 (the second set of 6 items).
+For page 3, (currentPage - 1) * 6 = 12, so the slice starts at index 12, and so on.
+currentPage * 6:
+
+This is the end index for slicing.
+For page 1, currentPage * 6 = 6, so the slice ends at index 6 (excluding index 6).
+For page 2, currentPage * 6 = 12, so the slice ends at index 12, and so on.
+Example:
+If currentPage = 2 and jobs.length = 20:
+
+Slice: jobs.slice(6, 12) will return jobs from index 6 to 11 (6 jobs on page 2).
+2. .map((job, index) => (<JobCard key={index} job={job} />))
+Once the subset of jobs is sliced, .map() is used to iterate over the selected jobs and render a JobCard for each one.
+
+map():
+
+This method is used to transform each item in the array (the sliced jobs) into a JSX element (<JobCard />).
+The map() function takes two arguments:
+job: The current job object from the sliced array.
+index: The index of the current job within the sliced array.
+Rendering a JobCard:
+
+For each job, a JobCard component is created and rendered.
+The key={index} attribute is used to give each JobCard a unique key, which helps React efficiently update the DOM during re-renders.
+The job={job} passes the current job object as a prop to the JobCard component.
+onClick={() => setCurrentPage(Math.max(currentPage - 1), 1)}
+Purpose:
+This is intended to move the currentPage to the previous page when clicked, but it ensures that the page number doesn’t go below 1 (the first page).
+
+Explanation:
+Math.max(currentPage - 1, 1):
+currentPage - 1: Subtracts 1 from the currentPage to move to the previous page.
+Math.max(a, b): Returns the largest of the two values a and b.
+This ensures that the new currentPage is never less than 1.
+For example, if you're on the first page (currentPage = 1), it would normally decrement to 0. But Math.max(0, 1) will return 1, keeping the page number within valid bounds.
+How it Works:
+If currentPage = 3, clicking the button will set the new currentPage to 2 (3 - 1).
+If currentPage = 1, clicking the button will keep the currentPage at 1 (because Math.max(0, 1) will return 1).
+2. onClick={() => setCurrentPage(Math.min(currentPage + 1, Math.ceil(jobs.length / 6))}
+Purpose:
+This function moves the currentPage to the next page when clicked, ensuring the page number doesn’t exceed the total number of pages.
+
+Explanation:
+Math.min(currentPage + 1, Math.ceil(jobs.length / 6)):
+currentPage + 1: Increments the currentPage by 1 to move to the next page.
+Math.ceil(jobs.length / 6): This calculates the total number of pages, rounding up to ensure that any leftover jobs (less than 6) still result in a new page.
+Example: If there are 10 jobs, Math.ceil(10 / 6) will give 2 pages.
+Math.min(a, b): Returns the smaller of the two values a and b. This ensures the currentPage never exceeds the total number of pages.
+For example, if currentPage = 2 and there are 2 pages, Math.min(3, 2) will return 2, preventing the page from going beyond the last page.
+How it Works:
+If currentPage = 1 and there are 2 pages, clicking the button will set the currentPage to 2 (because Math.min(2, 2) returns 2).
+If currentPage = 2, clicking the button will keep the currentPage at 2 (because Math.min(3, 2) returns 2).
+
+Now we want to render jobs as per the title and location mentioned in search space
+or as per the sortlisting search by category and search by location.
+We need to create state variables selectedCategories selectedLoations filteredJobs.
+The useEffect hook  ensures that whenever the dependencies in the dependency array ([jobs, selectedCategories, selectedLocations, searchFilter]) change, the filtering logic is re-executed.
+Each helper function determines whether a job matches a specific filter criterion. If any filter is empty or not applied, it includes all jobs by default.
+Each helper function determines whether a job matches a specific filter criterion. If any filter is empty or not applied, it includes all jobs by default.
+toLowerCase() ensures that search and result is not hampered by case-sensitive for searchFilter.location and searchFilter.title
+Creates a shallow copy of the jobs array with .slice() to avoid mutating the original array.
+Reverses the array so that jobs are processed in reverse order (e.g., the newest job is considered first).
+.filter(...):
+
+Iterates through the reversed jobs and applies all four helper functions to each job.
+A job is included in newFilteredJobs only if it satisfies all conditions (logical AND &&).
+Updates the filteredJobs state with the newly filtered job list.
+Resets the current page to 1 whenever the filters change, ensuring the user sees the first page of results.
+
+With the help of useNavigte hook in the JobCard component we ensure that we navigate to /apply-job/jobid scrolls the web page to top on Clicking Apply Now and Learn More button in JobCard Component.
+
+Extracts the id parameter from the current URL. This id is used to identify the specific job the user wants to view.
+Example: If the URL is /jobs/123, then id will be "123".
+Initializes a state variable JobData to store the details of the specific job. Initially set to null.
+setJobData is used to update the JobData once the job details are retrieved.
+Accesses the jobs array from the AppContext. This array contains all available job listings.
+Filters the jobs array to find the job that matches the id from the URL.
+If a matching job is found (data.length != 0), it updates JobData with the job details (data[0]).
+Runs whenever id or jobs changes.
+Logic:
+Checks if the jobs array has data (jobs.length > 0).
+If true, calls fetchJob to fetch the job details for the current id.
+If the job data is fetched then the details wil be rendered or loading  component will be rendered.
+ 
+ In Navbar.jsx with the help of useNavigate we make possible that on clicking the logo  button we are redirected to home page.
